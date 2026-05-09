@@ -9,10 +9,11 @@ import { useAuthStore } from "@/stores/auth";
 
 function CartBadge() {
   const { data } = useCart();
-  if (!data || data.item_count === 0) return null;
+  const distinctCount = data?.items.length ?? 0;
+  if (distinctCount === 0) return null;
   return (
     <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-bold text-primary-foreground">
-      {data.item_count}
+      {distinctCount}
     </span>
   );
 }
