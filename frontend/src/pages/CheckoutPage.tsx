@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ChevronLeft, Lock, Truck } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -54,90 +55,107 @@ export function CheckoutPage() {
 
   if (!cart || cart.items.length === 0) {
     return (
-      <div className="container py-8">
+      <div className="container py-12">
         <p className="text-muted-foreground">Your cart is empty.</p>
+        <Button asChild className="mt-4">
+          <Link to="/products">Continue shopping</Link>
+        </Button>
       </div>
     );
   }
 
   return (
-    <div className="container py-8">
-      <h1 className="mb-6 text-3xl font-bold tracking-tight">Checkout</h1>
+    <div className="container py-10">
+      <Button variant="ghost" size="sm" asChild className="mb-2 -ml-2">
+        <Link to="/cart">
+          <ChevronLeft className="mr-1 h-4 w-4" /> Back to cart
+        </Link>
+      </Button>
+      <h1 className="mb-8 font-display text-4xl font-bold tracking-tight">Checkout</h1>
 
-      <form className="grid gap-6 lg:grid-cols-[1fr_360px]" onSubmit={handleSubmit(onSubmit)}>
-        <Card>
-          <CardHeader>
-            <CardTitle>Shipping address</CardTitle>
-          </CardHeader>
-          <CardContent className="grid gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="shipping_name">Full name</Label>
-              <Input id="shipping_name" {...register("shipping_name")} />
-              {errors.shipping_name && <p className="text-xs text-destructive">{errors.shipping_name.message}</p>}
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="shipping_address_line1">Address</Label>
-              <Input id="shipping_address_line1" {...register("shipping_address_line1")} />
-              {errors.shipping_address_line1 && (
-                <p className="text-xs text-destructive">{errors.shipping_address_line1.message}</p>
-              )}
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="shipping_address_line2">Apartment / Suite</Label>
-              <Input id="shipping_address_line2" {...register("shipping_address_line2")} />
-            </div>
-            <div className="grid gap-4 md:grid-cols-2">
+      <form className="grid gap-6 lg:grid-cols-[1fr_380px]" onSubmit={handleSubmit(onSubmit)}>
+        <div className="space-y-6">
+          <Card className="border-border/60">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Truck className="h-5 w-5 text-primary" /> Shipping address
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="grid gap-4">
               <div className="space-y-2">
-                <Label htmlFor="shipping_city">City</Label>
-                <Input id="shipping_city" {...register("shipping_city")} />
-                {errors.shipping_city && <p className="text-xs text-destructive">{errors.shipping_city.message}</p>}
+                <Label htmlFor="shipping_name">Full name</Label>
+                <Input id="shipping_name" {...register("shipping_name")} />
+                {errors.shipping_name && <p className="text-xs text-destructive">{errors.shipping_name.message}</p>}
               </div>
               <div className="space-y-2">
-                <Label htmlFor="shipping_state">State / Region</Label>
-                <Input id="shipping_state" {...register("shipping_state")} />
-                {errors.shipping_state && <p className="text-xs text-destructive">{errors.shipping_state.message}</p>}
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="shipping_postal">Postal code</Label>
-                <Input id="shipping_postal" {...register("shipping_postal")} />
-                {errors.shipping_postal && (
-                  <p className="text-xs text-destructive">{errors.shipping_postal.message}</p>
+                <Label htmlFor="shipping_address_line1">Address</Label>
+                <Input id="shipping_address_line1" {...register("shipping_address_line1")} />
+                {errors.shipping_address_line1 && (
+                  <p className="text-xs text-destructive">{errors.shipping_address_line1.message}</p>
                 )}
               </div>
               <div className="space-y-2">
-                <Label htmlFor="shipping_country">Country (2-letter)</Label>
-                <Input id="shipping_country" maxLength={2} {...register("shipping_country")} />
-                {errors.shipping_country && (
-                  <p className="text-xs text-destructive">{errors.shipping_country.message}</p>
-                )}
+                <Label htmlFor="shipping_address_line2">Apartment / Suite (optional)</Label>
+                <Input id="shipping_address_line2" {...register("shipping_address_line2")} />
               </div>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="notes">Order notes (optional)</Label>
-              <Textarea id="notes" rows={3} {...register("notes")} />
-            </div>
-          </CardContent>
-        </Card>
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor="shipping_city">City</Label>
+                  <Input id="shipping_city" {...register("shipping_city")} />
+                  {errors.shipping_city && <p className="text-xs text-destructive">{errors.shipping_city.message}</p>}
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="shipping_state">State / Region</Label>
+                  <Input id="shipping_state" {...register("shipping_state")} />
+                  {errors.shipping_state && (
+                    <p className="text-xs text-destructive">{errors.shipping_state.message}</p>
+                  )}
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="shipping_postal">Postal code</Label>
+                  <Input id="shipping_postal" {...register("shipping_postal")} />
+                  {errors.shipping_postal && (
+                    <p className="text-xs text-destructive">{errors.shipping_postal.message}</p>
+                  )}
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="shipping_country">Country (2-letter)</Label>
+                  <Input id="shipping_country" maxLength={2} {...register("shipping_country")} />
+                  {errors.shipping_country && (
+                    <p className="text-xs text-destructive">{errors.shipping_country.message}</p>
+                  )}
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="notes">Order notes (optional)</Label>
+                <Textarea id="notes" rows={3} {...register("notes")} />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
-        <Card className="h-fit">
+        <Card className="h-fit border-border/60 lg:sticky lg:top-24">
           <CardHeader>
             <CardTitle>Summary</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-3 text-sm">
+          <CardContent className="space-y-4 text-sm">
             <div className="space-y-2">
               {cart.items.map((item) => (
                 <div key={item.id} className="flex justify-between gap-2">
-                  <span className="line-clamp-1">
-                    {item.product_name} × {item.quantity}
-                  </span>
-                  <span>{formatCurrency(item.line_total)}</span>
+                  <div className="min-w-0">
+                    <p className="line-clamp-1 font-medium">{item.product_name}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {item.variant.size} · {item.variant.color} × {item.quantity}
+                    </p>
+                  </div>
+                  <span className="tabular">{formatCurrency(item.line_total)}</span>
                 </div>
               ))}
             </div>
             <Separator />
             <div className="flex justify-between">
               <span className="text-muted-foreground">Subtotal</span>
-              <span>{formatCurrency(cart.subtotal)}</span>
+              <span className="tabular">{formatCurrency(cart.subtotal)}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">Shipping</span>
@@ -146,13 +164,13 @@ export function CheckoutPage() {
             <Separator />
             <div className="flex justify-between text-base font-semibold">
               <span>Total</span>
-              <span>{formatCurrency(cart.subtotal)}</span>
+              <span className="tabular">{formatCurrency(cart.subtotal)}</span>
             </div>
             <Button type="submit" className="w-full" size="lg" disabled={isSubmitting}>
               {isSubmitting ? "Placing order..." : "Place order"}
             </Button>
-            <p className="text-xs text-muted-foreground">
-              No real charge — checkout creates a pending order in the demo.
+            <p className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
+              <Lock className="h-3 w-3" /> Demo checkout — no real charge.
             </p>
           </CardContent>
         </Card>

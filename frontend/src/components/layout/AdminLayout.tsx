@@ -1,6 +1,7 @@
-import { LayoutDashboard, ListOrdered, LogOut, Package, Tags, Users, Zap } from "lucide-react";
+import { LayoutDashboard, ListOrdered, LogOut, Package, Tags, Users } from "lucide-react";
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 
+import { Wordmark } from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/stores/auth";
@@ -19,11 +20,11 @@ export function AdminLayout() {
 
   return (
     <div className="flex min-h-screen bg-muted/30">
-      <aside className="hidden w-60 flex-col border-r bg-background md:flex">
-        <div className="flex h-16 items-center gap-2 border-b px-6 font-bold">
-          <Zap className="h-5 w-5 text-primary" />
-          <span>BoltWear</span>
-          <span className="ml-auto rounded bg-primary/10 px-2 py-0.5 text-xs text-primary">Admin</span>
+      <aside className="hidden w-64 flex-col border-r border-border/60 bg-background md:flex">
+        <div className="flex h-16 items-center border-b border-border/60 px-5">
+          <Link to="/admin">
+            <Wordmark showAdmin />
+          </Link>
         </div>
         <nav className="flex flex-col gap-1 p-3">
           {NAV.map((item) => (
@@ -33,8 +34,10 @@ export function AdminLayout() {
               end={item.end}
               className={({ isActive }) =>
                 cn(
-                  "flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors",
-                  isActive ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted",
+                  "flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                  isActive
+                    ? "bg-primary text-primary-foreground shadow-sm shadow-primary/20"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground",
                 )
               }
             >
@@ -43,8 +46,11 @@ export function AdminLayout() {
             </NavLink>
           ))}
         </nav>
-        <div className="mt-auto flex flex-col gap-2 border-t p-3">
-          <p className="px-3 text-xs text-muted-foreground">{user?.email}</p>
+        <div className="mt-auto flex flex-col gap-2 border-t border-border/60 p-3">
+          <div className="rounded-lg border bg-muted/30 px-3 py-2">
+            <p className="text-xs uppercase tracking-wider text-muted-foreground">Signed in as</p>
+            <p className="line-clamp-1 text-sm font-medium">{user?.email}</p>
+          </div>
           <Button variant="outline" size="sm" asChild>
             <Link to="/">View store</Link>
           </Button>
@@ -62,15 +68,15 @@ export function AdminLayout() {
       </aside>
 
       <div className="flex-1">
-        <header className="flex h-16 items-center justify-between border-b bg-background px-6 md:hidden">
-          <Link to="/admin" className="flex items-center gap-2 font-bold">
-            <Zap className="h-5 w-5 text-primary" /> BoltWear Admin
+        <header className="flex h-16 items-center justify-between border-b border-border/60 bg-background px-6 md:hidden">
+          <Link to="/admin">
+            <Wordmark showAdmin />
           </Link>
           <Button variant="ghost" size="sm" asChild>
             <Link to="/">Store</Link>
           </Button>
         </header>
-        <div className="p-6">
+        <div className="p-6 lg:p-8">
           <Outlet />
         </div>
       </div>
